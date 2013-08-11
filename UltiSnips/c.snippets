@@ -32,10 +32,18 @@ $0
 endsnippet
 
 snippet main "main() (main)"
-int main(int argc, char const *argv[])
+int main(int argc, const char **argv)
 {
 	${0:/* code */}
-	return 0;
+	return EXIT_SUCCESS;
+}
+endsnippet
+
+snippet vmain "void main"
+int main(void)
+{
+    ${0:/* code */}
+    return EXIT_SUCCESS;
 }
 endsnippet
 
@@ -53,10 +61,9 @@ endsnippet
 snippet once "Include header once only guard"
 #ifndef ${1:`!p
 if not snip.c:
-	import random, string
+	import string
 	name = re.sub(r'[^A-Za-z0-9]+','_', snip.fn).upper()
-	rand = ''.join(random.sample(string.ascii_letters+string.digits, 8))
-	snip.rv = ('%s_%s' % (name,rand)).upper()
+	snip.rv = ('%s' % (name)).upper()
 else:
     snip.rv = snip.c`}
 #define $1
@@ -77,8 +84,15 @@ do {
 } while(${1:/* condition */});
 endsnippet
 
+snippet while "while loop (while)"
+while (${0:/* condition */})
+{
+    ${1:/* code */}
+}
+endsnippet
+
 snippet fprintf "fprintf ..."
-fprintf(${1:stderr}, "${2:%s}\n"${2/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$3${2/([^%]|%%)*(%.)?.*/(?2:\);)/}
+fprintf(${1:stdout}, "${2:%s}\n"${2/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$3${2/([^%]|%%)*(%.)?.*/(?2:\);)/}
 endsnippet
 
 snippet if "if .. (if)"
@@ -96,6 +110,13 @@ snippet st "struct"
 struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
 {
 	${0:/* data */}
+};
+endsnippet
+
+snippet tdst "typedef struct"
+typedef struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
+{
+    ${0:/* data */}
 };
 endsnippet
 
